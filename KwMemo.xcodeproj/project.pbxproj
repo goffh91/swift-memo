@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		961413A6258BA0DA001E14CF /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961413A5258BA0DA001E14CF /* DataManager.swift */; };
 		961510A42588E7C800052F46 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961510A32588E7C800052F46 /* AppDelegate.swift */; };
 		961510AB2588E7C800052F46 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 961510A92588E7C800052F46 /* Main.storyboard */; };
 		961510AE2588E7C800052F46 /* KwMemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 961510AC2588E7C800052F46 /* KwMemo.xcdatamodeld */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		961413A5258BA0DA001E14CF /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		961510A02588E7C800052F46 /* KwMemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KwMemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		961510A32588E7C800052F46 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		961510AA2588E7C800052F46 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -47,6 +49,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		961413A4258BA0C6001E14CF /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				961413A5258BA0DA001E14CF /* DataManager.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		961510972588E7C800052F46 = {
 			isa = PBXGroup;
 			children = (
@@ -66,6 +76,7 @@
 		961510A22588E7C800052F46 /* KwMemo */ = {
 			isa = PBXGroup;
 			children = (
+				961413A4258BA0C6001E14CF /* Data */,
 				961510CB2588ED7D00052F46 /* Model */,
 				961510A32588E7C800052F46 /* AppDelegate.swift */,
 				961510A92588E7C800052F46 /* Main.storyboard */,
@@ -167,6 +178,7 @@
 				961510C72588EB8A00052F46 /* SceneDelegate.swift in Sources */,
 				961510CD2588ED9400052F46 /* Model.swift in Sources */,
 				966C02C8258A550900434608 /* UIViewController+Alert.swift in Sources */,
+				961413A6258BA0DA001E14CF /* DataManager.swift in Sources */,
 				966C02CB258A5EFA00434608 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -14,7 +14,7 @@ class DetailViewController: UIViewController {
     let dateFormater: DateFormatter = {
         let f = DateFormatter()
         f.dateStyle = .long
-        f.timeStyle = .none
+        f.timeStyle = .short
         f.locale = Locale(identifier: "Ko_kr")
         return f
     }()
@@ -28,7 +28,7 @@ class DetailViewController: UIViewController {
 extension DetailViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Memo.dummyMemoList.count
+        return 2 //Memo.dummyMemoList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -42,10 +42,11 @@ extension DetailViewController: UITableViewDataSource {
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "dateCell", for: indexPath)
             
-            cell.textLabel?.text = dateFormater.string(for: memo?.creatd_at)
+            cell.textLabel?.text = dateFormater.string(from: (memo?.created_at)!)
             return cell
     
         default:
+            print("\(indexPath.row)")
             fatalError()
         }
     }
