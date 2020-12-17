@@ -10,6 +10,7 @@ import UIKit
 class DetailViewController: UIViewController {
 
     var memo: Memo?
+    @IBOutlet weak var memoTableView: UITableView!
     
     let dateFormater: DateFormatter = {
         let f = DateFormatter()
@@ -19,8 +20,24 @@ class DetailViewController: UIViewController {
         return f
     }()
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination.children.first as? ComposeViewController {
+            vc.editTarget = memo
+        }
+    }
+    
+    var token: NSObjectProtocol?
+    
+    deinit {
+        if let token = token {
+            NotificationCenter.default.removeObserver(token)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        token = NotificationCenter.default.addObserver(forName: ComposeViewController.memoDidChange, object: nil, queue: OperationQueue.main, using: { [weak self] (noti) in self?.memoTableView.reloadData() })
     }
 
 }
@@ -28,7 +45,7 @@ class DetailViewController: UIViewController {
 extension DetailViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2 //Memo.dummyMemoList.count
+        return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
