@@ -211,6 +211,12 @@
                                             <segue destination="Idh-WY-rBD" kind="presentation" id="Cpq-gq-DIm"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="u40-CX-zZz"/>
+                                    <barButtonItem systemItem="action" id="xLW-BP-OAb">
+                                        <connections>
+                                            <action selector="share:" destination="uSx-gQ-OcL" id="lve-0R-Io1"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
