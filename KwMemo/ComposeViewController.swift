@@ -11,8 +11,22 @@ class ComposeViewController: UIViewController {
     
     var editTarget: Memo?
     var originalMemoContent: String?
+    var willShowKeyboardToken: NSObjectProtocol?
+    var willHideKeyboardToken: NSObjectProtocol?
     
     @IBOutlet weak var textView: UITextView!
+    
+    
+    deinit {
+        if let token = willShowKeyboardToken {
+            NotificationCenter.default.removeObserver(token)
+        }
+        
+        if let token = willHideKeyboardToken {
+            NotificationCenter.default.removeObserver(token)
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,24 +41,56 @@ class ComposeViewController: UIViewController {
         }
         
         textView.delegate = self
+        
+        willShowKeyboardToken = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: OperationQueue.main, using: { [weak self] (noti) in
+            guard let strongSelf = self else { return }
+            
+            if let frame = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+                let height = frame.cgRectValue.height
+                
+                var inset = strongSelf.textView.contentInset
+                inset.bottom = height
+                strongSelf.textView.contentInset = inset
+                
+                inset = strongSelf.textView.scrollIndicatorInsets
+                inset.bottom = height
+                strongSelf.textView.scrollIndicatorInsets = inset
+            }
+        })
+        
+        willHideKeyboardToken = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: OperationQueue.main, using: { [weak self] (noti) in
+            guard let strongSelf = self else { return }
+            
+            var inset = strongSelf.textView.contentInset
+            inset.bottom = 0
+            strongSelf.textView.contentInset = inset
+            
+            inset = strongSelf.textView.scrollIndicatorInsets
+            inset.bottom = 0
+            strongSelf.textView.contentInset = inset
+        })
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        textView.becomeFirstResponder()
+        navigationController?.presentationController?.delegate = self
     }
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        navigationController?.presentationController?.delegate = self
+        navigationController?.presentationController?.delegate = nil
     }
+    
     
     @IBAction func close(_ sender: Any) {
         dismiss(animated: true, completion: nil)
-        
-        navigationController?.presentationController?.delegate = nil
     }
+    
     
     @IBAction func save(_ sender: Any) {
         guard let memo = textView.text,
@@ -62,11 +108,17 @@ class ComposeViewController: UIViewController {
             NotificationCenter.default.post(name: ComposeViewController.newMemoDidInsert, object: nil)
         }
         
-        
         dismiss(animated: true, completion: nil)
     }
     
 }
+
+
+extension ComposeViewController {
+    static let newMemoDidInsert = Notification.Name(rawValue: "newMemoDidInsert")
+    static let memoDidChange = Notification.Name(rawValue: "memoDidChange")
+}
+
 
 extension ComposeViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
@@ -79,6 +131,7 @@ extension ComposeViewController: UITextViewDelegate {
         }
     }
 }
+
 
 extension ComposeViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
@@ -98,9 +151,4 @@ extension ComposeViewController: UIAdaptivePresentationControllerDelegate {
         
         present(alert, animated: true, completion: nil)
     }
-}
-
-extension ComposeViewController {
-    static let newMemoDidInsert = Notification.Name(rawValue: "newMemoDidInsert")
-    static let memoDidChange = Notification.Name(rawValue: "memoDidChange")
 }
