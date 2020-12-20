@@ -9,6 +9,8 @@ import UIKit
 
 class MemoListTableViewController: UITableViewController {
 
+    var token: NSObjectProtocol?
+    
     let dateFormater: DateFormatter = {
         let f = DateFormatter()
         f.dateStyle = .long
@@ -17,13 +19,13 @@ class MemoListTableViewController: UITableViewController {
         return f
     }()
     
-    var token: NSObjectProtocol?
     
     deinit {
         if let token = token {
             NotificationCenter.default.removeObserver(token)
         }
     }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let cell = sender as? UITableViewCell,
@@ -42,6 +44,7 @@ class MemoListTableViewController: UITableViewController {
         }
     }
 
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -49,12 +52,14 @@ class MemoListTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return DataManager.shared.memoList.count
     }
 
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
@@ -65,14 +70,17 @@ class MemoListTableViewController: UITableViewController {
         return cell
     }
     
+    
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
+    
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
     }
 
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let target = DataManager.shared.memoList[indexPath.row]

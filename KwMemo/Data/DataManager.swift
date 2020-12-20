@@ -15,11 +15,13 @@ class DataManager {
         // Singleton
     }
     
+    
+    var memoList = [Memo]()
+    
     var mainContext: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
     
-    var memoList = [Memo]()
     
     func fetchMemo() {
         let request: NSFetchRequest<Memo> = Memo.fetchRequest()
@@ -34,6 +36,7 @@ class DataManager {
         }
     }
     
+    
     func addMemo(_ memo: String?) {
         let newMemo = Memo(context: mainContext)
         newMemo.content = memo
@@ -44,12 +47,14 @@ class DataManager {
         saveContext()
     }
     
+    
     func deleteMemo(_ memo: Memo?) {
         if let memo = memo {
             mainContext.delete(memo)
             saveContext()
         }
     }
+    
     
     // MARK: - Core Data stack
 
@@ -63,6 +68,7 @@ class DataManager {
         return container
     }()
 
+    
     // MARK: - Core Data Saving support
 
     func saveContext () {
@@ -76,5 +82,4 @@ class DataManager {
             }
         }
     }
-    
 }
